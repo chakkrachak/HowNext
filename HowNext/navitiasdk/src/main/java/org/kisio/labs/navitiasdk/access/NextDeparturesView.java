@@ -6,10 +6,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.kisio.labs.navitiasdk.models.StopSchedule;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.kisio.labs.navitiasdk.models.StopSchedule;
 import org.kisio.labs.navitiasdk.models.StopSchedulesResponse;
 
 import java.io.IOException;
