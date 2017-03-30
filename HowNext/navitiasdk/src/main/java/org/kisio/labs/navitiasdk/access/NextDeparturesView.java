@@ -1,7 +1,11 @@
 package org.kisio.labs.navitiasdk.access;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.google.gson.Gson;
@@ -23,16 +27,34 @@ public class NextDeparturesView {
     private ListView mListView;
     private ArrayAdapter adapter;
     private ArrayList<String> listItems;
+    private AppCompatActivity linkedActivity;
 
     DateFormat navitiaDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
-    public NextDeparturesView(AppCompatActivity appCompatActivity, int stopSchedulesListView) {
-        mListView = (ListView) appCompatActivity.findViewById(stopSchedulesListView);
+    public NextDeparturesView(AppCompatActivity linkedActivity, int stopSchedulesListView) {
+        this.linkedActivity = linkedActivity;
+        mListView = (ListView) this.linkedActivity.findViewById(stopSchedulesListView);
         listItems = new ArrayList<String>();
 
         new GetDataTask(this.listItems).execute();
 
-        adapter = new ArrayAdapter(appCompatActivity, android.R.layout.simple_list_item_1, listItems);
+        adapter = new ArrayAdapter(this.linkedActivity, android.R.layout.simple_list_item_1, listItems);
         mListView.setAdapter(adapter);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                AlertDialog alertDialog = new AlertDialog.Builder(linkedActivity).create();
+                alertDialog.setTitle("Open route");
+                alertDialog.setMessage(listItems.get(i));
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
     }
 
     class GetDataTask extends AsyncTask<Void, Void, Void> {
