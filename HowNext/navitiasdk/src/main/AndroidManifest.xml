@@ -8,6 +8,8 @@
             android:supportsRtl="true">
         <activity android:name="org.kisio.labs.navitiasdk.access.NextDeparturesActivity">
         </activity>
+        <activity android:name="org.kisio.labs.navitiasdk.access.RoadBookActivity">
+        </activity>
     </application>
 
 </manifest>

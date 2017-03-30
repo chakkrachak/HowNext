@@ -2,6 +2,7 @@ package org.kisio.labs.navitiasdk.access;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -43,16 +44,8 @@ public class NextDeparturesView {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                AlertDialog alertDialog = new AlertDialog.Builder(linkedActivity).create();
-                alertDialog.setTitle("Open route");
-                alertDialog.setMessage(listItems.get(i));
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog.show();
+                Intent intent = new Intent(linkedActivity, RoadBookActivity.class);
+                linkedActivity.startActivity(intent);
             }
         });
     }
