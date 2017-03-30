@@ -6,7 +6,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import hownext.labs.kisio.org.hownext.R;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -14,13 +13,18 @@ import org.kisio.labs.navitiasdk.models.StopSchedule;
 import org.kisio.labs.navitiasdk.models.StopSchedulesResponse;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class NextDeparturesView {
     private ListView mListView;
     private ArrayAdapter adapter;
     private ArrayList<String> listItems;
 
+    DateFormat navitiaDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
     public NextDeparturesView(AppCompatActivity appCompatActivity, int stopSchedulesListView) {
         mListView = (ListView) appCompatActivity.findViewById(stopSchedulesListView);
         listItems = new ArrayList<String>();
@@ -54,15 +58,22 @@ public class NextDeparturesView {
             GsonBuilder builder = new GsonBuilder();
             Gson gson = builder.create();
             StopSchedulesResponse stopSchedulesResponse = gson.fromJson(jsonResponse, StopSchedulesResponse.class);
+            Date now = new Date();
             for (StopSchedule stopSchedule : stopSchedulesResponse.getStopSchedules()) {
-                listItems.add(stopSchedule.getStopPoint().getLabel());
+                Date currentDate = null;
+                try {
+                    currentDate = navitiaDateFormat.parse(stopSchedule.getDateTimes().get(0).getDateTime());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                listItems.add(stopSchedule.getStopPoint().getLabel() + " [" + stopSchedule.getDisplayInformations().getLabel() + "] " + " => " + (currentDate.getTime() - now.getTime())/(1000*60) + " min");
             }
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                fetchData("https://api.navitia.io/v1/coverage/fr-idf/coords/2.377310%3B48.847002/stop_schedules?distance=500&count=5&", this.listItems);
+                fetchData("https://api.navitia.io/v1/coverage/fr-idf/coords/2.377310%3B48.847002/stop_schedules?distance=500&count=20&", this.listItems);
             } catch (IOException e) {
                 e.printStackTrace();
             }
