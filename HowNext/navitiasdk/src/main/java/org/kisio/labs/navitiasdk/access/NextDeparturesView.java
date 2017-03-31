@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import org.kisio.labs.navitiasdk.models.StopSchedule;
-import org.kisio.labs.navitiasdk.models.StopSchedulesResponse;
+import org.kisio.labs.navitiasdk.models.stopschedules.StopSchedule;
+import org.kisio.labs.navitiasdk.models.stopschedules.StopSchedulesResponse;
 import org.kisio.labs.navitiasdk.utils.DataFetcher;
 
 import java.io.IOException;

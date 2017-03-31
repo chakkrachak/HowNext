@@ -8,7 +8,8 @@ import okhttp3.Response;
 
 import java.io.IOException;
 
-public class DataFetcher<T> {
+public class
+DataFetcher<T> {
     final Class<T> typeParameterClass;
     private String token;
 
